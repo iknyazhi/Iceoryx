@@ -63,29 +63,29 @@ jobs:
       - name: Compute Coverage
         working-directory: ${{github.workspace}}/build
         run: |
-          cpptestcov compute -map cpptest-coverage/iceoryx_meta/.cpptest -clog cpptest-coverage/iceoryx_meta/iceoryx_meta.clog -out .coverage
+          /home/igork/Parasoft/cpptest-ct/bin/cpptestcov compute -map cpptest-coverage/iceoryx_meta/.cpptest -clog cpptest-coverage/iceoryx_meta/iceoryx_meta.clog -out .coverage
 
       - name: Report Coverage to Console
         working-directory: ${{github.workspace}}/build
         run: |
-          cpptestcov report text .coverage
+          /home/igork/Parasoft/cpptest-ct/bin/cpptestcov report text .coverage
 
       - name: Compute Index for VS Code
         working-directory: ${{github.workspace}}/build
         run: |
-          cpptestcov index .coverage
+          /home/igork/Parasoft/cpptest-ct/bin/cpptestcov index .coverage
 
       - name: Generate Coverage Reports
         working-directory: ${{github.workspace}}/build
         shell: bash
         # Execute the build.  You can specify a specific target with "--target <NAME>"
-        run:  cpptestcov report html .coverage -code -out .coverage/coverage.html
+        run:  /home/igork/Parasoft/cpptest-ct/bin/cpptestcov report html .coverage -code -out .coverage/coverage.html
 
       - name: Publish Reports to DTP
         working-directory: ${{github.workspace}}/build
         shell: bash
         # Execute the build.  You can specify a specific target with "--target <NAME>"
-        run:  cpptestcov report dtp -property build.id=${build_id} -property dtp.project=${DTP_PROJECT} .coverage gtest_results.xml
+        run:  /home/igork/Parasoft/cpptest-ct/bin/cpptestcov report dtp -property build.id=${build_id} -property dtp.project=${DTP_PROJECT} .coverage gtest_results.xml
         
       - name: Setup Pages
         uses: actions/configure-pages@v5
@@ -118,7 +118,7 @@ jobs:
         shell: bash
         # Query for project's coverage and compare with the gate requirements
         run: |
-          NUMBER=$(cpptestcov query -coverage LC .coverage) && if [ $NUMBER -lt $LINE_COV_GATE ]; then echo "LINE coverage quality gate failed"; echo "Expected result $LINE_COV_GATE%, echieved $NUMBER%"; false; else echo "LINE coverage quality gate passed with $NUMBER% (required $LINE_COV_GATE%)"; true; fi  
+          NUMBER=$(/home/igork/Parasoft/cpptest-ct/bin/cpptestcov query -coverage LC .coverage) && if [ $NUMBER -lt $LINE_COV_GATE ]; then echo "LINE coverage quality gate failed"; echo "Expected result $LINE_COV_GATE%, echieved $NUMBER%"; false; else echo "LINE coverage quality gate passed with $NUMBER% (required $LINE_COV_GATE%)"; true; fi  
           echo "Check html report https://iknyazhi.github.io/iceoryx/coverage.html"
         
       - name: MCDC Coverage Quality Gate
@@ -126,7 +126,7 @@ jobs:
         shell: bash
         # Query for project's coverage and compare with the gate requirements
         run: |
-          NUMBER=$(cpptestcov query -coverage MCDC .coverage) && if [ $NUMBER -lt $MCDC_COV_GATE ]; then echo "MCDC coverage quality gate failed"; echo "Expected result $MCDC_COV_GATE%, echieved $NUMBER%"; false; else echo "MCDC coverage quality gate passed with $NUMBER% (required $MCDC_COV_GATE%)"; true; fi  
+          NUMBER=$(/home/igork/Parasoft/cpptest-ct/bin/cpptestcov query -coverage MCDC .coverage) && if [ $NUMBER -lt $MCDC_COV_GATE ]; then echo "MCDC coverage quality gate failed"; echo "Expected result $MCDC_COV_GATE%, echieved $NUMBER%"; false; else echo "MCDC coverage quality gate passed with $NUMBER% (required $MCDC_COV_GATE%)"; true; fi  
           echo "Check html report https://iknyazhi.github.io/iceoryx/coverage.html"
 
       
