@@ -20,13 +20,13 @@ function (cpptest_enable_coverage)
                     OUTPUT_STRIP_TRAILING_WHITESPACE)
   else()
     set(CPPTEST_BINARY_DIR "${CMAKE_BINARY_DIR}")
-    set(CPPTEST_SOURCE_DIR "${CMAKE_SOURCE_DIR}")
+    set(CPPTEST_SOURCE_DIR "${CMAKE_SOURCE_DIR}/..")
   endif()
 
   # Configure C/C++test compiler identifier
   set(CPPTEST_COMPILER_ID "gcc_11-64")
   # Configure coverage type(s) for instrumentation engine - see 'cpptestcc -help' for details
-  set(CPPTEST_COVERAGE_TYPE_INSTRUMENTATION -line-coverage -statement-coverage -block-coverage -decision-coverage -simple-condition-coverage -mcdc-coverage -function-coverage -call-coverage)
+  set(CPPTEST_COVERAGE_TYPE_INSTRUMENTATION -template-coverage -constexpr-coverage -line-coverage -statement-coverage -block-coverage -decision-coverage -simple-condition-coverage -mcdc-coverage -function-coverage -call-coverage)
   # Configure coverage type(s) for reporting engine - see 'cpptestcov -help' for details
   set(CPPTEST_COVERAGE_TYPE_REPORT "LC,SC,BC,DC,SCC,MCDC,FC,CC" )
   # Configure C/C++test project name
@@ -89,11 +89,19 @@ function (cpptest_enable_coverage)
       -compiler ${CPPTEST_COMPILER_ID}
       ${CPPTEST_COVERAGE_TYPE_INSTRUMENTATION}
       -exclude "regex:*"
-      -include "regex:${CPPTEST_SOURCE_DIR}/*"
+      -include "regex:${CPPTEST_SOURCE_DIR}/iceoryx_hoofs/container/include/iox/detail/vector.inl"
+      #-include "regex:${CPPTEST_SOURCE_DIR}/../iceoryx_hoofs/test/moduletests/test_container_vector.cpp"
       -exclude "regex:${CPPTEST_BINARY_DIR}/*"
-      -ignore "regex:*_test.cpp"
-      -ignore "regex:${CPPTEST_BINARY_DIR}/*")
-
+      #-exclude "regex:${CPPTEST_SOURCE_DIR}/../iceoryx_hoofs/test/moduletests/test_container_vector.cpp"
+      #-ignore "regex:*/test_container_vector.cpp"
+      -ignore "regex:${CPPTEST_SOURCE_DIR}/*"
+      -ignore "regex:${CPPTEST_SOURCE_DIR}/iceoryx_posh/*"
+      -ignore "regex:${CPPTEST_SOURCE_DIR}/iceoryx_platform/*"
+      -ignore "regex:${CPPTEST_SOURCE_DIR}/iceoryx_examples/*"
+      -ignore "regex:${CPPTEST_SOURCE_DIR}/iceoryx_integrationtest/*"
+      -ignore "regex:${CPPTEST_SOURCE_DIR}/iceoryx_binding_c/*"
+      -ignore "regex:${CPPTEST_BINARY_DIR}/*"
+      )
   # Use advanced settings file for cpptestcc, if exists
   if(EXISTS "${CMAKE_SOURCE_DIR}/.cpptestcc")
     set(CPPTEST_CPPTESTCC_OPTS
