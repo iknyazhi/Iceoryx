@@ -11,7 +11,7 @@ on:
   workflow_dispatch:
 
 env:
-  LINE_COV_GATE: 0
+  LINE_COV_GATE: 100
   MCDC_COV_GATE: 0
   DTP_PROJECT: iceoryx_ct
 
