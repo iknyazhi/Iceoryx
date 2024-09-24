@@ -14,6 +14,9 @@ env:
   LINE_COV_GATE: 100
   MCDC_COV_GATE: 0
   DTP_PROJECT: iceoryx_ct
+  
+  environment:
+  name: github-pages
 
 permissions:
   contents: read
