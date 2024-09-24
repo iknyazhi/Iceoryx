@@ -97,9 +97,7 @@ jobs:
         uses: actions/upload-pages-artifact@v3
         with:
           # Upload coverage reports
-          environment:
-            name: github-pages
-            path: ${{github.workspace}}/build/.coverage
+          path: ${{github.workspace}}/build/.coverage
         
       - name: Archive reports
         if: always()
